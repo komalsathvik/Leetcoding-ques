@@ -1,0 +1,50 @@
+ques --> Longest Substring with At least K repeating characters
+Given a string s and an integer k, return the length of the longest substring of s such that the frequency of each character in this substring is greater than or equal to k.
+
+if no such substring exists, return 0.
+
+ 
+
+Example 1:
+
+Input: s = "aaabb", k = 3
+Output: 3
+Explanation: The longest substring is "aaa", as 'a' is repeated 3 times.
+Example 2:
+
+Input: s = "ababbc", k = 2
+Output: 5
+Explanation: The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated 3 times.
+ 
+
+Constraints:
+
+1 <= s.length <= 10^4
+s consists of only lowercase English letters.
+1 <= k <= 10^5
+
+CODE 
+class Solution {
+    public int longestSubstring(String s, int k) {
+        int[] arr=new int[26];
+        for(char ch:s.toCharArray()){
+            arr[ch-'a']++;
+        }
+        int i=0;
+        int max=0;
+        boolean isAll=true;
+        for(int j=0;j<s.length();j++){
+            if(arr[s.charAt(j)-'a']>0 && arr[s.charAt(j)-'a']<k){
+                String sub=s.substring(i,j);
+                max=Math.max(max,longestSubstring(sub,k));
+                i=j+1;
+                isAll=false;
+            }
+        }
+        if(isAll)return s.length();
+        return Math.max(max,longestSubstring(s.substring(i),k));
+    }
+}
+
+Approach ->> making into substrings where the ans could be found and dividing it substrings and passing it to the same function call again to check whether it is of the max length or not
+(DIVIDE AND CONQUER TECHNIQUE)
