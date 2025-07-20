@@ -1,0 +1,38 @@
+#sum of subarray minimums
+
+Given an array of integers arr, find the sum of min(b), where b ranges over every (contiguous) subarray of arr. Since the answer may be large, return the answer modulo 109 + 7.
+
+Example 1:
+
+Input: arr = [3,1,2,4]
+Output: 17
+Explanation:
+Subarrays are [3], [1], [2], [4], [3,1], [1,2], [2,4], [3,1,2], [1,2,4], [3,1,2,4].
+Minimums are 3, 1, 2, 4, 1, 1, 2, 1, 1, 1.
+Sum is 17.
+Example 2:
+
+Input: arr = [11,81,94,43,3]
+Output: 444
+
+Constraints:
+
+1 <= arr.length <= 3 _ 104
+1 <= arr[i] <= 3 _ 104
+
+#Solution
+imp note :- total no of subarrays involving a value in it is total left side values - total right side values (include that particular value inside both the subarrays);
+
+Approach next smaller and prev greater at every index and get it done
+For every element we need to find the next smaller element and previous element by using stack and if no such element exists for previous smaller put -1 and for next smaller put n 
+
+HOW EXACTLY DOES THIS HELP US ?
+
+Lets take an array [1,5,3,4,7,9,2]
+in this array what are the possible subarrays which has minimum value as 3
+there are 8 subarrays
+HOW??
+the left most min value is 1 at index - (0) and the right most min value is 2 at index - (6)
+so 3 is at index 2
+therefore (i-left)(right-i)=> (2-0)(6-2) => 2\*4 = 8 subarrays
+by using this concept we will try to find for every element and add the result to answer.
