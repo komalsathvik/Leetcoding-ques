@@ -46,3 +46,5 @@ Constraints:
 
 #Solution
 imp note :- total no of subarrays involving a value in it is total left side values * total right side values (include that particular value inside both the subarrays);
+refer leetcode 907 ( sum of min of subarrays) and similarly find sum of  max of subarrays
+ans=max-min....
