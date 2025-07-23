@@ -1,0 +1,79 @@
+ques --> Max score from removing substring (stack approach)
+
+
+You are given a string s and two integers x and y. You can perform two types of operations any number of times.
+
+Remove substring "ab" and gain x points.
+For example, when removing "ab" from "cabxbae" it becomes "cxbae".
+Remove substring "ba" and gain y points.
+For example, when removing "ba" from "cabxbae" it becomes "cabxe".
+Return the maximum points you can gain after applying the above operations on s.
+
+ 
+
+Example 1:
+
+Input: s = "cdbcbbaaabab", x = 4, y = 5
+Output: 19
+Explanation:
+- Remove the "ba" underlined in "cdbcbbaaabab". Now, s = "cdbcbbaaab" and 5 points are added to the score.
+- Remove the "ab" underlined in "cdbcbbaaab". Now, s = "cdbcbbaa" and 4 points are added to the score.
+- Remove the "ba" underlined in "cdbcbbaa". Now, s = "cdbcba" and 5 points are added to the score.
+- Remove the "ba" underlined in "cdbcba". Now, s = "cdbc" and 5 points are added to the score.
+Total score = 5 + 4 + 5 + 5 = 19.
+Example 2:
+
+Input: s = "aabbaaxybbaabb", x = 5, y = 4
+Output: 20
+Constraints:
+
+1 <= s.length <= 105
+1 <= x, y <= 104
+s consists of lowercase English letters
+
+#approach --> we just try to traverse along the string by consider whether x>y or y>x based on that "ab" should be removed or "ba" should be removed will be considered and getSum() func is purely logic like how we handle cases where we hit some other character like how we can get sum of it simply by multiplying remaining a , b min of it and min of x,y is been multipied and at the end also if stack is not empty you does the same ...
+
+
+#code 
+class Solution {
+    static int getSum(Stack<Character> stack,int x,int y){
+        int aCt=0;
+        int bCt=0;
+        while(!stack.isEmpty()){
+            char ch=stack.pop();
+            if(ch=='a')aCt++;
+            else bCt++;
+        }
+        return Math.min(aCt,bCt)*Math.min(x,y);
+    }
+    public int maximumGain(String s, int x, int y) {
+        Stack<Character> stack=new Stack<>();  
+        int sum=0;
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            if(stack.isEmpty() && (ch=='a' || ch=='b')){
+                stack.push(ch);
+            }
+            else if(ch!='a' && ch!='b'){
+               sum+=getSum(stack,x,y);
+            }
+            else if(!stack.isEmpty()){
+                if(x>y && stack.peek()=='a' &&ch=='b'){
+                    sum+=x;
+                    stack.pop();
+                }
+                else if(x<y && stack.peek()=='b' &&ch=='a'){
+                    sum+=y;
+                    stack.pop();
+                }
+                else{
+                    stack.push(ch);
+                }
+            }
+        }
+        if(!stack.isEmpty()){
+            sum+=getSum(stack,x,y);
+        }
+        return sum;
+    }
+}
