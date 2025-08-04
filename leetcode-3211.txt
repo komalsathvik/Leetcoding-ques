@@ -1,0 +1,73 @@
+Generate Binary strings without adjacent zeros ----> Recursion
+You are given a positive integer n.
+
+A binary string x is valid if all substrings of x of length 2 contain at least one "1".
+
+Return all valid strings with length n, in any order.
+
+ 
+
+Example 1:
+
+Input: n = 3
+
+Output: ["010","011","101","110","111"]
+
+Explanation:
+
+The valid strings of length 3 are: "010", "011", "101", "110", and "111".
+
+Example 2:
+
+Input: n = 1
+
+Output: ["0","1"]
+
+Explanation:
+
+The valid strings of length 1 are: "0" and "1".
+
+ 
+
+Constraints:
+
+1 <= n <= 18
+
+Recursive approach - easy !
+
+komalsathvik
+50 Days Badge 2025
+0
+a few seconds ago
+Java
+Intuition
+We need to fill the n places of a binary strings either with "1" or with "0" and there shouldn't be consecutive zeros.
+
+Approach
+For every place we have two choices either 1 or 0 if the last place of the possible string is 1 then we have two choices to fill the next place either 1 or 0 if the last place is 0 then since there shouldn't be two consecutive zeros the only choice to fill it with is 1.
+So first we call up func with 1 every time
+And if the last char is 1 then we may also call next place of string with 0 for n-1.
+And every time when n==0 (base case) we add up string to array list so this is the recursive approach.
+
+Complexity
+Time complexity:O(2ⁿ × n)
+Space complexity:O(2ⁿ × n) (for the result list) + O(n) (for recursion stack)
+
+#CODE
+class Solution {
+    static void func(int n,String str,List<String> arr,int last){
+        if(n==0){
+            arr.add(str);
+            return;
+        }
+        func(n-1,str+"1",arr,1);
+        if(last==1){
+            func(n-1,str+"0",arr,0);
+        }
+    }
+    public List<String> validStrings(int n) {
+         List<String> arr=new ArrayList<>();
+        func(n,"",arr,1);
+        return arr;
+    }
+}
