@@ -1,0 +1,55 @@
+#ques -->Sum of modes 
+approach -->(TreeSet + HashMap)
+Given an array arr[] of positive integers and an integer k. You have to find the sum of the modes of all the subarrays of size k.
+Note: The mode of a subarray is the element that occurs with the highest frequency. If multiple elements have the same highest frequency, the smallest such element is considered the mode.
+
+Examples:
+
+Input: arr[] = [1, 2, 3, 2, 5, 2, 4, 4], k = 3
+Output: 13
+Explanation: The mode of each k size subarray is [1, 2, 2, 2, 2, 4] and sum of all modes is 13.
+Input: arr[] = [1, 2, 1, 3, 5], k = 2
+Output: 6
+Explanation: The mode of each k size subarray is [1, 1, 1, 3] and sum of all modes is 6.
+Constraints:
+1 ≤ k ≤ arr.size() ≤105
+1 ≤ arr[i] ≤ 105
+
+#approach
+we take a treeset of type int[]
+Treeset<int[]> ---> where everytime we use a comparator TreeSet<int[]> set=new TreeSet<>((a,b)->a[0]!=b[0] ? Integer.compare(a[0],b[0]):Integer.compare(a[1],b[1]));
+this comparator checks if value or freq is same then compares value else if freq is more then puts then in ascending order so that our required lies in last place
+but the trick is if the freq is same then we need to consider the max value out of it so we need to put -ve sign before keys so that it becomes max in terms of value and goes to max
+and by sliding through the window of size k we add the mode to sum by getting last value of set which will required value of that window !!!
+
+#code 
+class Solution {
+    public int sumOfModes(int[] arr, int k) {
+        int n=arr.length;
+        int min=Integer.MAX_VALUE;
+        TreeSet<int[]> set=new TreeSet<>((a,b)->a[0]!=b[0] ? Integer.compare(a[0],b[0]):Integer.compare(a[1],b[1]));
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<k;i++){
+            map.put(arr[i],map.getOrDefault(arr[i],0)+1);
+        }
+        for(Map.Entry<Integer,Integer> e:map.entrySet()){
+            set.add(new int[]{e.getValue(),-(e.getKey())});
+        }
+        int sum=0;
+        int mode=-(set.last()[1]);
+        sum+=mode;
+        for(int i=k;i<n;i++){
+            int out=arr[i-k];
+            int in=arr[i];
+            set.remove(new int[]{map.get(out),-(out)});
+            map.put(out,map.getOrDefault(out,0)-1);
+            if(map.get(out)==0)map.remove(out);
+            else set.add(new int[]{map.get(out),-(out)});
+            map.put(in,map.getOrDefault(in,0)+1);
+            set.add(new int[]{map.get(in),-(in)});
+            int val=-(set.last()[1]);
+            sum+=val;
+        }
+        return sum;
+    }
+}
